@@ -68,29 +68,31 @@ function MainPage() {
 
   const onChange = (pagination, sorter, extra) => { 
     // return extra === objec;
-};
 
-  // const objec= { toString: function() { return this.field + ", " + this.order; } };
+    // const objec= { toString: function() { return this.field + ", " + this.order; } };
+  };
   
 
   const [dataSource, setDataSource] = useState([]);
   const [page, setPage] = useState(0)
   const [selectedSort, setSelectedSort] = useState('')
-  const [sortParams, setSortParams] = useState()
+  const [sortParams, setSortParams] = useState('email,asc')
+
+  useEffect(() => {
+    console.log('StateSortParams => ', sortParams)
+  }, [sortParams])
   
   const getUsers = async () => {
     await axios
-      .get('http://localhost:6100/users', { params: { page: page, sort:sortParams , size: 10 } })
+      .get('http://localhost:6100/users', { params: { page: page, sort: sortParams, size: 10 } })
       .then(data => {
-        setDataSource(data.data.content);
-        
+        setDataSource(data.data);
       })
   };
 
   useEffect(() => {
     getUsers();
-    
-  }, [page, sortParams]);
+  }, [sortParams, page]);
 
   return (
     <div className="App">
@@ -113,18 +115,24 @@ function MainPage() {
 
       <Header />
       <Table
-        onChange={setSortParams}
-        dataSource={dataSource}
+        onChange={(pagination, filters, sorter, extra) => {
+          console.log("LOG -> ~ MainPage ~ pagination:", pagination)
+          setPage(pagination.current - 1)
+          setSortParams(`${sorter.field},${sorter.order?.slice(0, -3) ?? 'asc'}`)
+        }}
+        dataSource={dataSource.content}
         columns={columns}
-        pagination={false}
+        pagination={{
+          total: dataSource.totalElements
+        }}
         filterDropdown={true}
       />
-      <Pagination
+      {/* <Pagination
         total={111}
         onChange={(data) => {
           setPage(data - 1)
         }}
-      />
+      /> */}
     </div>
   );
 
