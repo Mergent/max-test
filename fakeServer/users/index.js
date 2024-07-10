@@ -14,7 +14,7 @@ router.get('/users', (req, res) => {
   res.send(filteredAndPaginationSort(users, params))
 });
 
-router.get('/register', (req, res) => {
+router.post('/register', (req, res) => {
   const users = readFile(usersPath)
   const { body } = req
 
