@@ -886,5 +886,13 @@
     "firstName": "firstName111",
     "lastName": "lastName111",
     "role": "USER"
+  },
+  {
+    "firstName": "Maxim",
+    "lastName": "Semizhonov",
+    "userName": "userName112",
+    "email": "m.a.semizhonov@gmail.com",
+    "role": "ADMINISTRATOR",
+    "id": "55cfa523-e974-47d1-aa99-f6073929cc57"
   }
 ]

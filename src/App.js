@@ -1,18 +1,27 @@
-import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MainPage from "./pages/MainPage";
+import React, { Children } from "react";
+import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 import RegistrationForm from "./pages/RegisrationForm";
+import RootPage from "./pages/RootPage";
+import ErrorPage from "./pages/ErrorPage";
+import UsersPage from "./pages/UsersPage";
 
 const router = createBrowserRouter([
   {
-    path: "/users",
-    element: <MainPage />,
+    path: "/",
+    element: <RootPage />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/users",
+        element: <UsersPage />
+      },
+      {
+        path: "/register",
+        element: <RegistrationForm />
+      }
+    ]
   },
-  {
-    path:"/register",
-    element: <RegistrationForm/>
 
-  },
 ]);
 
 function App() {
@@ -20,6 +29,5 @@ function App() {
   return (
     <RouterProvider router={router} />
   );
-
 }
 export default App;

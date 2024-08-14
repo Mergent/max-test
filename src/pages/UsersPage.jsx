@@ -1,6 +1,6 @@
 import React from "react";
-import { useEffect, useState} from "react"; 
-import { Header } from "antd/es/layout/layout";
+import { useEffect, useState } from "react";
+
 import { Table } from "antd";
 import axios from 'axios';
 
@@ -38,7 +38,7 @@ const columns = [
   },
 ];
 
-function MainPage() {
+function UsersPage() {
   const [dataSource, setDataSource] = useState([]);
   const [page, setPage] = useState(0)
   const [sortParams, setSortParams] = useState('email,asc')
@@ -55,28 +55,28 @@ function MainPage() {
         setDataSource(data.data);
       })
   };
-  
+
   useEffect(() => {
     getUsers();
   }, [sortParams, page, sizeOfPage]);
 
   return (
     <div className="App">
-      <Header/>
-        <Table
-          onChange={(pagination, filters, sorter, extra) => {
-            console.log("LOG -> ~ MainPage ~ pagination:", pagination)
-            setsizeOfPage(pagination.pageSize)
-            setPage(pagination.current - 1)
-            setSortParams(`${sorter.field},${sorter.order?.slice(0, -3) ?? 'asc'}`)
-          }}
-          dataSource={dataSource.content}
-          columns={columns}
-          pagination={{
-            total: dataSource.totalElements
-          }} 
-        />
+
+      <Table
+        onChange={(pagination, filters, sorter, extra) => {
+          console.log("LOG -> ~ MainPage ~ pagination:", pagination)
+          setsizeOfPage(pagination.pageSize)
+          setPage(pagination.current - 1)
+          setSortParams(`${sorter.field},${sorter.order?.slice(0, -3) ?? 'asc'}`)
+        }}
+        dataSource={dataSource.content}
+        columns={columns}
+        pagination={{
+          total: dataSource.totalElements
+        }}
+      />
     </div>
   );
 }
-export default MainPage;
+export default UsersPage;
