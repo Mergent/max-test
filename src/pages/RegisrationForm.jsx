@@ -13,7 +13,7 @@ const schema = yup
     lastName: yup.string()
       .required("This field is required. You can't leave this field blank")
       .matches(/^[a-zA-Z0-9_-]+$/, 'Contains invalid characters'),
-    userName: yup.string()
+    username: yup.string()
       .required("This field is required. You can't leave this field blank"),
     email: yup.string()
       .required("This field is required. You can't leave this field blank")
@@ -32,22 +32,39 @@ const RegistrationForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const [formData, setFormData] = useState([]);
+  // const [formData, setFormData] = useState([]);
 
-  useEffect(() => {
-    console.log('state:formData =>', formData)
-  }, [formData])
+  // useEffect(() => {
+  //   console.log('state:formData =>', formData)
+  // }, [formData])
 
-  const PostUsers = async () => {
-    await axios
-      .post('http://localhost:6100/register', { formData })
-      .then(response => { console.log(response.data) })
-      .catch(error => { console.log(error.data) });
-  };
+  // const PostUsers = async () => {
+  //   await axios
+  //     .post('http://localhost:6100/register', { formData })
+  //     .then(response => { console.log(response.data) })
+  //     .catch(error => { console.log(error.data) });
+  // };
 
-  useEffect(() => {
-    PostUsers();
-  }, [formData]);
+  // useEffect(() => {
+  //   PostUsers();
+  // }, [formData]);
+
+  const useRegister = () => {
+    const [response, setResponse] = useState([]);
+
+    const registerUser = async (formData) => {
+      try {
+        const response = await axios.post('http://localhost:6100/register', { ...formData })
+        setResponse(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    return { response, registerUser }
+  }
+
+  const { registerUser } = useRegister()
 
   return (
     <div className="App">
@@ -56,7 +73,7 @@ const RegistrationForm = () => {
       </h1>
 
       <form style={{ maxWidth: 600, margin: "auto" }}
-        onSubmit={handleSubmit(setFormData)}>
+        onSubmit={handleSubmit(registerUser)}>
         <Controller
           name="firstName"
           control={control}
@@ -78,7 +95,7 @@ const RegistrationForm = () => {
         />
 
         <Controller
-          name="userName"
+          name="username"
           control={control}
           render={({ field }) =>
             <Form.Item>
